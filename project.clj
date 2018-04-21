@@ -1,6 +1,8 @@
-(defproject clauth "1.0.0-rc17"
+(defproject org.clojars.vellichor/clauth "1.0.0-rc18-SNAPSHOT"
   :description "OAuth2 based authentication library for Ring"
   :url "http://github.com/pelle/clauth"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [crypto-random "1.1.0"]
                  [commons-codec "1.6"]
