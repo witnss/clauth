@@ -1,0 +1,21 @@
+version: '3'
+services:
+  job:
+    build: .
+    volumes:
+      - .:/var/srv
+    ports:
+     - "8080:8080"
+    links:
+      - db
+      - redis
+  db:
+    image: "cassandra:3.11"
+  redis:
+    image: "redis:4.0.9"
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+
