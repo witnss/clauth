@@ -11,6 +11,13 @@
 ;; bind a session here to use alia.
 (def ^:dynamic *session* nil)
 
+(defn parse-int [int-string]
+  (try
+    (Integer/parseInt int-string)
+    (catch NumberFormatException e
+      nil)))
+
+
 (defn get-token-keyspace []
   (or (get (System/getenv) "CLAUTH_KEYSPACE") "clauth"))
 
@@ -19,7 +26,7 @@
   (alia/cluster
     {
       :contact-points [(or (get (System/getenv) "CASSANDRA_HOST") "localhost")]
-      :port (int (or (get (System/getenv) "CASSANDRA_PORT") 9042))
+      :port (or (parse-int (get (System/getenv) "CASSANDRA_PORT")) 9042)
     }))
 
 ;; in the bound *session* use the token keyspace, create if needed
@@ -27,8 +34,8 @@
   (let [token-keyspace (get-token-keyspace)
         replication-strategy (or (get (System/getenv) "CASSANDRA_REPLICATION_STRATEGY"
                                   "SimpleStrategy"))
-        replication-factor (int (or (get (System/getenv) "CASSANDRA_REPLICATION_FACTOR") 
-                                  1))]
+        replication-factor (or (parse-int (get (System/getenv) "CASSANDRA_REPLICATION_FACTOR"))
+                                  1)]
     (alia/execute *session* (format "CREATE KEYSPACE IF NOT EXISTS %s
                     WITH REPLICATION = {'class' : '%s', 
                                         'replication_factor' : %d};" 
