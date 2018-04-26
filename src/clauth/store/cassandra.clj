@@ -25,8 +25,10 @@
 ;; in the bound *session* use the token keyspace, create if needed
 (defn use-token-keyspace []
   (let [token-keyspace (get-token-keyspace)
-        replication-strategy (or (get (System/getenv) "REPLICATION_STRATEGY" "SimpleStrategy"))
-        replication-factor (int (or (get (System/getenv) "REPLICATION_FACTOR") 1))]
+        replication-strategy (or (get (System/getenv) "CASSANDRA_REPLICATION_STRATEGY"
+                                  "SimpleStrategy"))
+        replication-factor (int (or (get (System/getenv) "CASSANDRA_REPLICATION_FACTOR") 
+                                  1))]
     (alia/execute *session* (format "CREATE KEYSPACE IF NOT EXISTS %s
                     WITH REPLICATION = {'class' : '%s', 
                                         'replication_factor' : %d};" 
