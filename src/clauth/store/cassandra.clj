@@ -39,7 +39,7 @@
                     token-keyspace))))
 
 
-;; bind a session with the token keyspace using conn (as defined in scope)
+;; bind a session with the token keyspace using conn (as defined in calling scope)
 (defmacro wcass
   [& body]
   `(binding [*session* (alia/connect ~'conn)]
